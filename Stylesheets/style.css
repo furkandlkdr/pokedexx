@@ -144,9 +144,6 @@ h2{
     box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.2);
     background-color: #d6c922;
 }
-#buttonDiv{
-    display: flex;
-}
 #reset{
     justify-content: space-around;
     align-items: center;
