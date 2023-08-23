@@ -19,6 +19,40 @@ a{
 h2{
     letter-spacing: 3px;
 }
+#buttonDiv{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.my-class/* Butons' class  */
+{
+    margin-top: 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+    background-color: #d6c887;
+    justify-content: space-between;
+    flex-grow: 4;
+}
+.my-class:hover{
+    box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
+    background-color: #d6c922;
+}
+#reset{
+    justify-content: space-around;
+    align-items: center;
+    font-size: 100%;
+    font-family: inherit;
+    border: 20px;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    background-color: rgb(250, 55, 104);
+}
+#reset:hover{
+    box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.2);
+    background-color: rgb(245, 14, 72);
+}
 .poke_cont{
     display: flex;
     flex-wrap: wrap;
@@ -132,31 +166,4 @@ h2{
     color: #d6c887;
     letter-spacing: 2px;
     font-family: "Poppins",cursive;
-}
-.my-class
-{
-    margin-top: 15px;
-    border-radius: 5px;
-    background-color: #d6c887;
-    justify-content: space-between;
-}
-.my-class:hover{
-    box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.2);
-    background-color: #d6c922;
-}
-#reset{
-    justify-content: space-around;
-    align-items: center;
-    font-size: 100%;
-    font-family: inherit;
-    border: 20px;
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s;
-    background-color: rgb(250, 55, 104);
-}
-#reset:hover{
-    box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.2);
-    background-color: rgb(245, 14, 72);
 }

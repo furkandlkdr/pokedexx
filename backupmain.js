@@ -6,22 +6,16 @@ const search = document.getElementById("search")
 const form = document.getElementById("form")
 
 function clickEvent(type){
-    if (type != "buttonDiv"){
-        type = type.toString().toLowerCase();
-        getPokemonByType(type);
-        console.log(type);
-    }
+    type = type.toString().toLowerCase();
+    getPokemonByType(type);
+    console.log(type);
 }
 
 const fetchPokemons = async() => {
     for (let count = 1; count <= POKEMONS_NUMBER; count++){
-        const pokemonEl = document.createElement("div");
-        pokemonEl.setAttribute("id", `poke-${count}`);
-        POKE_CONT.appendChild(pokemonEl);
-        getAllPokemons(count).then((pokemon) => {
-            createPokemonCart(pokemon)
-        })
+        await getAllPokemons(count);
     }
+    pokemons.forEach(pokemon => createPokemonCart(pokemon))
 };
 
 const removePokemon = () => {
@@ -35,72 +29,82 @@ const removePokemon = () => {
 }
 
 const getPokemonByType = async(type) => {
-    const searchPokemons = pokemons.filter((poke) => poke.types[0].type.name === type);
-
+    type = type.toLowerCase()
+    //const pokeTypes = pokemon.types.map((el) => el.type.name).slice(0, 1);
+    const searchPokemons = pokemons.filter((poke) => poke.types[0].type.name=== type);
     console.log(searchPokemons)
-    POKE_CONT.innerHTML = "";
-    searchPokemons.forEach((pokemon) => {
-        const pokemonEl = document.createElement("div");
-        pokemonEl.setAttribute("id", `poke-${pokemon.id}`);
-        POKE_CONT.appendChild(pokemonEl);
-        createPokemonCart(pokemon);
-    } );
+    removePokemon();
+    searchPokemons.forEach((pokemon) => createPokemonCart(pokemon))
 }
 
 const getPokemon = async(id) => {
     const searchPokemons = pokemons.filter((poke) => poke.name.startsWith(id))
-    POKE_CONT.innerHTML = "";
-    searchPokemons.forEach((pokemon) => {
-        const pokemonEl = document.createElement("div");
-        pokemonEl.setAttribute("id", `poke-${pokemon.id}`);
-        POKE_CONT.appendChild(pokemonEl);
-        createPokemonCart(pokemon);
-    } );
+    removePokemon();
+    searchPokemons.forEach((pokemon) => createPokemonCart(pokemon));
 }
 
 const getAllPokemons = async(id) => {
     const res = await fetch(`${URL}/${id}`);
     const pokemon = await res.json();
     pokemons = [...pokemons, pokemon]
-    return pokemon
 };
 fetchPokemons();
 
 function emoji_types(type){
     type = type.toString().toLowerCase();
-    const types = {
-        normal: "⚫︎",
-        fire: "&#128293;",
-        water: "&#128167;",
-        grass: "&#127793;",
-        flying: "🕊️",
-        fighting: "&#129354;",
-        poison: "&#9762;",
-        electric: "&#9889;",
-        ground: "&#128507;",
-        rock: "&#128511;",
-        psychic: "&#128302;",
-        ice: "&#10052;",
-        bug: "🐞",
-        ghost: "👻",
-        dragon: "&#128009;",
-        dark: "🌙",
-        fairy: "&#10024;"
-    };
-    return types[type] || "";
+    switch (type) {
+        case "normal":
+            return "⚫︎";
+        case "fire":
+            return "&#128293;";
+        case "water":
+            return "&#128167;";
+        case "grass":
+            return "&#127793;";
+        case "flying":
+            return "🕊️";
+        case "fighting":
+            return "&#129354;";
+        case "poison":
+            return "&#9762;";
+        case "electric":
+            return "&#9889;";
+        case "ground":
+            return "&#128507;";
+        case "rock":
+            return "&#128511;";
+        case "psychic":
+            return "&#128302;";
+        case "ice":
+            return "&#10052;";
+        case "bug":
+            return "🐞";
+        case "ghost":
+            return "👻";
+        case "dragon":
+            return "&#128009;";
+        case "dark":
+            return "🌙";
+        case "fairy":
+            return "&#10024;";
+    }
 };
 
-function createPokemonCart(pokemon){
-    const pokemonEl = document.querySelector("#poke-" + pokemon.id)
-    pokemonEl.classList.add("pokemon");
+function ftReset(event){
+    pokemons = [];
+    removePokemon();
+    fetchPokemons();
+}
 
+function createPokemonCart(pokemon){
+    const pokemonEl = document.createElement("div");
+    pokemonEl.classList.add("pokemon");
+    
     let poke_types = pokemon.types.map((el) => el.type.name).slice(0, 1);
     poke_types = poke_types.map(el => emoji_types(el));
-
     const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
     const poke_stat = pokemon.stats.map((el) => el.stat.name)
     const stats = pokemon.stats.slice(0,3);
-
     const base_value = pokemon.stats.map((el) => el.base_stat);
     const base_stat = base_value.slice(0, 3);
     const stat = stats.map((s) => {
@@ -119,7 +123,7 @@ function createPokemonCart(pokemon){
     <div class="info">
         <span class="number">#${pokemon.id.toString().padStart(3, "0")}</span>
         <h3 class="name">${name}</h3>
-        <small class="type"><span>(${poke_types})</span></small>
+        <small class="type"><span>${poke_types}</span></small>
     </div>
     <div class="stats">
         <h2>Stats</h2>
@@ -129,16 +133,7 @@ function createPokemonCart(pokemon){
             </div>
     </div>`;
     pokemonEl.innerHTML = pokeInnerHTML;
-}
-
-const ftReset = async(event) => {
-    POKE_CONT.innerHTML = "";
-    pokemons.forEach((pokemon) => {
-        const pokemonEl = document.createElement("div");
-        pokemonEl.setAttribute("id", `poke-${pokemon.id}`);
-        POKE_CONT.appendChild(pokemonEl);
-        createPokemonCart(pokemon);
-    } );
+    POKE_CONT.appendChild(pokemonEl);
 }
 
 form.addEventListener("submit", e =>{
@@ -148,12 +143,8 @@ form.addEventListener("submit", e =>{
         getPokemon(searchTerm);
         search.value = "";
     }else if (searchTerm === ""){
-        POKE_CONT.innerHTML = "";
-    pokemons.forEach((pokemon) => {
-        const pokemonEl = document.createElement("div");
-        pokemonEl.setAttribute("id", `poke-${pokemon.id}`);
-        POKE_CONT.appendChild(pokemonEl);
-        createPokemonCart(pokemon);
-    } );
+        pokemons = [];
+        removePokemon();
+        fetchPokemons();
     }
 });
