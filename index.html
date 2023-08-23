@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Stylesheets/style.css">
+    <title>Pokedex by Nafair</title>
+</head>
+
+<body>
+    <!-- search start -->
+    <a href="/index.html"><img src="/Images/poke.png"></a>
+    <form id="form">
+        <input type="text" id="search" class="search" placeholder="Search Your Pokemon">
+    </form>
+    <button onclick="ftReset()" id="reset"> Reset</button>
+    <div onclick="clickEvent(event.target.id)" id="buttons">
+        <button class="my-class" id="normal">⚫︎Normal</button>
+        <button class="my-class" id="fire">&#128293;Fire</button>
+        <button class="my-class" id="water">&#128167;Water</button>
+        <button class="my-class" id="grass">&#127793;Grass</button>
+        <button class="my-class" id="flying">🕊️Flying</button>
+        <button class="my-class" id="fighting">&#129354;Fighting</button>
+        <button class="my-class" id="poison">&#9762;Poison</button>
+        <button class="my-class" id="electric">&#9889;Electric</button>
+        <button class="my-class" id="ground">&#128507;Ground</button>
+        <button class="my-class" id="rock">&#128511;Rock</button>
+        <button class="my-class" id="psychic">&#128302;Psychic</button>
+        <button class="my-class" id="ice">&#10052;Ice</button>
+        <button class="my-class" id="bug">🐞Bug</button>
+        <button class="my-class" id="ghost">👻Ghost</button>
+        <button class="my-class" id="dragon">&#128009;Dragon</button>
+        <button class="my-class" id="dark">🌙Dark</button>
+        <button class="my-class" id="fairy">&#10024;Fairy</button>
+    </div>
+    <!-- search end -->
+
+    <!-- content start -->
+        <div id="poke_cont" class="poke_cont">
+            <script src="/Scripts/main.js"></script>
+        </div>
+    <!-- content end -->
+</body>
+</html>
