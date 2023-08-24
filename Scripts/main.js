@@ -1,11 +1,11 @@
-let pokemons = [];
+const pokemons = [];
 const POKE_CONT = document.getElementById('poke_cont')
-const URL = 'https://pokeapi.co/api/v2/pokemon'
-const POKEMONS_NUMBER = 151
-const search = document.getElementById("search")
-const form = document.getElementById("form")
-const localData = JSON.parse(localStorage.getItem("pokemons"))
-
+const URL = 'https://pokeapi.co/api/v2/pokemon';
+const POKEMONS_NUMBER = 151;
+const search = document.getElementById("search");
+const form = document.getElementById("form");
+const localData = JSON.parse(localStorage.getItem("pokemons"));
+//Button click event
 function clickEvent(type) {
     if (type != "buttonDiv") {
         type = type.toString().toLowerCase();
@@ -13,28 +13,41 @@ function clickEvent(type) {
         console.log(type);
     }
 }
-
-const fetchPokemons = async () => {
+//Fetch from api or fetch from localData
+async function fetchPokemons() {
     for (let count = 1; count <= POKEMONS_NUMBER; count++) {
         const pokemonEl = document.createElement("div");
         pokemonEl.setAttribute("id", `poke-${count}`);
         POKE_CONT.appendChild(pokemonEl);
-        getAllPokemons(count).then((pokemon) => {
-            createPokemonCart(pokemon)
-        })
-    }
-};
 
-const removePokemon = () => {
-    const pokemonEls = document.getElementsByClassName('pokemon');
-    let removablePokemon = [];
-    for (let count = 0; count < pokemonEls.length; count++) {
-        const pokemonEl = pokemonEls[count]
-        removablePokemon = [...removablePokemon, pokemonEl]
+        const pokeId = count;
+        const local = localData?.find((p) => p.id === pokeId);
+        if (local) {
+            const pokemon = {
+                id: pokeId,
+                name: local.name,
+                types: local.types,
+                stats: local.stats,
+            };
+            pokemons.push(pokemon);
+        } else {
+            const res = await fetch(`${URL}/${pokeId}`);
+            const { id, name, types, stats } = await res.json();
+            const pokemon = {
+                id,
+                name,
+                types,
+                stats,
+            };
+            pokemons.push(pokemon);
+        }
     }
-    removablePokemon.forEach(remPoke => remPoke.remove())
+    if (pokemons.length === POKEMONS_NUMBER) localStorage.setItem("pokemons", JSON.stringify(pokemons))
+    pokemons.forEach(element => {
+        createPokemonCart(element)
+    });
 }
-
+//Search by type
 const getPokemonByType = async (type) => {
     const searchPokemons = pokemons.filter((poke) => poke.types[0].type.name === type);
 
@@ -47,10 +60,11 @@ const getPokemonByType = async (type) => {
         createPokemonCart(pokemon);
     });
 }
-
+//Search by name 
 const getPokemon = async (id) => {
     const searchPokemons = pokemons.filter((poke) => poke.name.startsWith(id))
     POKE_CONT.innerHTML = "";
+    console.log(searchPokemons)
     searchPokemons.forEach((pokemon) => {
         const pokemonEl = document.createElement("div");
         pokemonEl.setAttribute("id", `poke-${pokemon.id}`);
@@ -58,27 +72,8 @@ const getPokemon = async (id) => {
         createPokemonCart(pokemon);
     });
 }
-
-async function getAllPokemons(pokeId) {
-    const local = localData?.find(p => p.id === pokeId)
-    if (local) {
-        return local
-    } else {
-        const res = await fetch(`${URL}/${pokeId}`);
-        const { id, name, types, stats } = await res.json();
-        const parsedPokemon = {
-            id,
-            name,
-            types,
-            stats,
-        }
-        pokemons.push(parsedPokemon)
-        if (pokemons.length === POKEMONS_NUMBER) localStorage.setItem("pokemons", JSON.stringify(pokemons))
-        return parsedPokemon
-    }
-};
 fetchPokemons();
-
+//Convert type string to emoji
 function emoji_types(type) {
     type = type.toString().toLowerCase();
     const types = {
@@ -102,7 +97,7 @@ function emoji_types(type) {
     };
     return types[type] || "";
 };
-
+//Create given id's pokemon
 function createPokemonCart(pokemon) {
     const pokemonEl = document.querySelector("#poke-" + pokemon.id)
     pokemonEl.classList.add("pokemon");
@@ -142,7 +137,7 @@ function createPokemonCart(pokemon) {
     </div>`;
     pokemonEl.innerHTML = pokeInnerHTML;
 }
-
+//When reset button is clicked we need to wipe the page and reflesh
 const ftReset = async (event) => {
     POKE_CONT.innerHTML = "";
     pokemons.forEach((pokemon) => {
@@ -152,9 +147,9 @@ const ftReset = async (event) => {
         createPokemonCart(pokemon);
     });
 }
-
-form.addEventListener("submit", e => {
-    e.preventDefault();
+//When form submits, we need to search for name
+form.addEventListener("submit", event => {
+    event.preventDefault();
     const searchTerm = search.value.toLowerCase();
     if (searchTerm) {
         getPokemon(searchTerm);
