@@ -66,8 +66,8 @@ h2{
     min-width: 200px;
     border-radius: 10px;
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.9);
-    border-top: 1px solid #d6c887;
-    border-bottom: 1px solid #d6c887;
+    /* border-top: 8px solid #d6c887;
+    border-bottom: 8px solid #d6c887; */
     margin: 10px;
     padding: 20px;
     text-align: center;

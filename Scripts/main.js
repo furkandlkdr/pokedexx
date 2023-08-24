@@ -49,8 +49,9 @@ async function fetchPokemons() {
 }
 //Search by type
 const getPokemonByType = async (type) => {
-    const searchPokemons = pokemons.filter((poke) => poke.types[0].type.name === type);
-
+    const searchPokemons = pokemons.filter((poke) => {
+        return poke.types.length > 1 ? poke.types[0].type.name === type || poke.types[1].type.name === type : poke.types[0].type.name === type;
+    });
     console.log(searchPokemons)
     POKE_CONT.innerHTML = "";
     searchPokemons.forEach((pokemon) => {
@@ -77,32 +78,56 @@ fetchPokemons();
 function emoji_types(type) {
     type = type.toString().toLowerCase();
     const types = {
-        normal: "⚫︎",
-        fire: "&#128293;",
-        water: "&#128167;",
-        grass: "&#127793;",
+        normal: "⚪",
+        fire: "🔥",
+        water: "💧",
+        grass: "☘️",
         flying: "🕊️",
-        fighting: "&#129354;",
-        poison: "&#9762;",
-        electric: "&#9889;",
-        ground: "&#128507;",
-        rock: "&#128511;",
-        psychic: "&#128302;",
-        ice: "&#10052;",
+        fighting: "🥊",
+        poison: "☢️",
+        electric: "⚡",
+        ground: "🗻",
+        rock: "🪨",
+        psychic: "🪄",
+        ice: "🧊",
         bug: "🐞",
         ghost: "👻",
-        dragon: "&#128009;",
+        dragon: "🐉",
         dark: "🌙",
-        fairy: "&#10024;"
+        fairy: "✨",
     };
     return types[type] || "";
 };
+function cartColoring(type){
+    const types = {
+        normal: "#75515B",
+        fire: "#AB1F23",
+        water: "#1552E2",
+        grass: "#147B3D",
+        flying: "#1C4B27",
+        fighting: "#994025",
+        poison: "#5E2D88",
+        electric: "#E3E32B",
+        ground: "#A9702C",
+        rock: "#48180B",
+        psychic: "#A42A6C",
+        ice: "#87D1F5",
+        bug: "#1C4B27",
+        ghost: "#33336B",
+        dragon: "#448B95",
+        dark: "#040706",
+        fairy: "#971944"
+    };
+    return types[type[0]] || "";
+}
 //Create given id's pokemon
 function createPokemonCart(pokemon) {
     const pokemonEl = document.querySelector("#poke-" + pokemon.id)
     pokemonEl.classList.add("pokemon");
 
-    let poke_types = pokemon.types.map((el) => el.type.name).slice(0, 1);
+    let poke_types = pokemon.types.map((el) => el.type.name).slice(0, 2);
+    pokemonEl.style.borderTop = `8px solid ${cartColoring(poke_types)}`;
+    pokemonEl.style.borderBottom  = `8px solid ${cartColoring(poke_types)}`;
     poke_types = poke_types.map(el => emoji_types(el));
 
     const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
@@ -116,9 +141,11 @@ function createPokemonCart(pokemon) {
         const { name } = stat // {"name":"hp","url":"https://pokeapi.co/api/v2/stat/1/"}
         return `<li class="names">${name}: ${base_stat}</li>`;
     }).join("");
+
     const base = base_stat.map((base) => {
         return `<li class="base>${base}</li>`
     }).join("");
+
     const pokeInnerHTML = `<div class="img-container">
         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pokemon.id}.png"
         alt="${name}"/>
@@ -126,7 +153,7 @@ function createPokemonCart(pokemon) {
     <div class="info">
         <span class="number">#${pokemon.id.toString().padStart(3, "0")}</span>
         <h3 class="name">${name}</h3>
-        <small class="type"><span>(${poke_types})</span></small>
+        <small class="type"><span>${poke_types.join(" ")}</span></small>
     </div>
     <div class="stats">
         <h2>Stats</h2>
