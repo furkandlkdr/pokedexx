@@ -132,14 +132,12 @@ function createPokemonCart(pokemon) {
 
     const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
     const stats = pokemon.stats.slice(0, 3);
-
     const base_value = pokemon.stats.map((el) => el.base_stat);
     const base_stat = base_value.slice(0, 3);
+
     const stat = stats.map((s) => {
-        // {"base_stat":45,"effort":0,"stat":{"name":"hp","url":"https://pokeapi.co/api/v2/stat/1/"}}
-        const { base_stat, stat } = s
-        const { name } = stat // {"name":"hp","url":"https://pokeapi.co/api/v2/stat/1/"}
-        return `<li class="names">${name}: ${base_stat}</li>`;
+        // {"base_stat": 45, "effort": 0, "stat": { "name": "hp","url": "https://pokeapi.co/api/v2/stat/1/"}}
+        return `<li class="names">${s.stat.name}: ${s.base_stat}</li>`;
     }).join("");
 
     const base = base_stat.map((base) => {
@@ -159,7 +157,6 @@ function createPokemonCart(pokemon) {
         <h2>Stats</h2>
             <div class="flex">
                 <ul>${stat}</ul>
-                <ul>${base}</ul>
             </div>
     </div>`;
     pokemonEl.innerHTML = pokeInnerHTML;
