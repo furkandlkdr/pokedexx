@@ -8,4 +8,6 @@ I maded this project based on [this video](https://www.youtube.com/watch?v=QVBl7
 
 I got help by [@code-a-man](https://github.com/code-a-man) thanks ❤️.
 
+We added localData feature for lower latency and lower data usage.
+
 You can review this repos' page in: https://furkandlkdr.github.io/pokedexx/
