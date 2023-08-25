@@ -22,15 +22,16 @@ h2{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 0.25rem;
 }
 .my-class/* Butons' class  */
 {
-    margin-top: 10px;
-    margin-right: 5px;
+    margin-top: 0.5rem;
+    margin-right: 0.6rem;
+    flex-grow: 1;
+
     border-radius: 5px;
     background-color: #d6c887;
-    justify-content: space-between;
-    flex-grow: 4;
 }
 .my-class:hover{
     box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
