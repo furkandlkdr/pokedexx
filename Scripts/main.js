@@ -32,7 +32,7 @@ async function fetchPokemons() {
             pokemons.push(pokemon);
         } else {
             const res = await fetch(`${URL}/${pokeId}`);
-            const { id, name, types, stats } = await res.json();
+            const { id, name, types, stats } = res;
             const pokemon = {
                 id,
                 name,
