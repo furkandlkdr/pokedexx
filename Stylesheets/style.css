@@ -65,6 +65,13 @@ h2{
     margin: 0 auto;
     max-width: 1200px;
 }
+.warning {
+    margin: 15px;
+    padding: 10px;
+    border-radius: 15px;
+    border: #d6c887 2px dashed;
+    color: rgb(212, 0, 0);
+}
 .pokemon{
     max-width: 200px;
     min-width: 200px;
