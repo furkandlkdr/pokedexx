@@ -70,7 +70,7 @@ const getPokemonByType = async (type) => {
     });
 }
 //Search by name 
-const getPokemon = async (name) => {
+const getPokemon = (name) => {
     const searchPokemons = pokemons.filter((poke) => poke.name.startsWith(name));
     POKE_CONT.innerHTML = "";
     searchPokemons.forEach((pokemon) => {
@@ -188,10 +188,9 @@ form.addEventListener("submit", event => {
     event.preventDefault();
     const searchTerm = search.value.toLowerCase().trim();
     if (searchTerm) {
-        const hasPokemon = getPokemon(searchTerm).result;
+        const hasPokemon = getPokemon(searchTerm);
         search.value = "";
-        console.log(hasPokemon)
-        if (!hasPokemon) {
+        if (hasPokemon === 0) {
             POKE_CONT.innerHTML = "";
             const warningEl = document.createElement("div");
             warningEl.classList.add("warning");
