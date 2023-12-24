@@ -23,19 +23,24 @@ h2{
     justify-content: center;
     gap: 0.25rem;
 }
-.my-class/* Butons' class  */
+.filter-buttons/* Butons' class  */
 {
     margin-top: 0.5rem;
     margin-right: 0.6rem;
     flex-grow: 1;
 
+    cursor: pointer;
     border-radius: 5px;
     background-color: #d6c887;
 }
-.my-class:hover{
+.filter-buttons:hover{
     box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
     background-color: #d6c922;
 }
+.filter-buttons + .selected-type{
+    background-color: #e5ff00;
+}
+
 #reset{
     justify-content: space-around;
     align-items: center;
@@ -126,7 +131,7 @@ h2{
 .pokemon:hover .stats{
     transform: translateY(0);
 }
-.my-class:hover{
+.filter-buttons:hover{
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 .flex{
