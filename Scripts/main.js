@@ -36,10 +36,10 @@ async function fetchPokemons() {
                 stats: local.stats,
             };
             pokemons.push(pokemon);
+            createPokemonCart(pokemon);
         } else {
             const res = await fetch(`${URL}/${pokeId}`);
             const response = await res.json();
-            console.log(response)
             const { id, name, types, stats } = response;
             const pokemon = {
                 id,
@@ -48,12 +48,13 @@ async function fetchPokemons() {
                 stats,
             };
             pokemons.push(pokemon);
+            createPokemonCart(pokemon);
         }
     }
     if (pokemons.length === POKEMONS_NUMBER) localStorage.setItem("pokemons", JSON.stringify(pokemons))
-    pokemons.forEach(element => {
-        createPokemonCart(element)
-    });
+    // pokemons.forEach(element => {
+    //     createPokemonCart(element)
+    // });
 }
 //Search by type
 const getPokemonByType = async (type) => {
@@ -69,16 +70,17 @@ const getPokemonByType = async (type) => {
     });
 }
 //Search by name 
-const getPokemon = async (id) => {
-    const searchPokemons = pokemons.filter((poke) => poke.name.startsWith(id));
+const getPokemon = async (name) => {
+    const searchPokemons = pokemons.filter((poke) => poke.name.startsWith(name));
     POKE_CONT.innerHTML = "";
-    console.log(searchPokemons)
     searchPokemons.forEach((pokemon) => {
         const pokemonEl = document.createElement("div");
         pokemonEl.setAttribute("id", `poke-${pokemon.id}`);
         POKE_CONT.appendChild(pokemonEl);
         createPokemonCart(pokemon);
     });
+    if (searchPokemons.length === 0) return 0;
+    return 1;
 }
 fetchPokemons();
 //Convert type string to emoji
@@ -184,10 +186,19 @@ const ftReset = async (event) => {
 //When form submits, we need to search for name
 form.addEventListener("submit", event => {
     event.preventDefault();
-    const searchTerm = search.value.toLowerCase();
+    const searchTerm = search.value.toLowerCase().trim();
     if (searchTerm) {
-        getPokemon(searchTerm);
+        const hasPokemon = getPokemon(searchTerm).result;
         search.value = "";
+        console.log(hasPokemon)
+        if (!hasPokemon) {
+            POKE_CONT.innerHTML = "";
+            const warningEl = document.createElement("div");
+            warningEl.classList.add("warning");
+            warningEl.setAttribute("id", "!!!");
+            POKE_CONT.appendChild(warningEl);
+            warningEl.innerHTML = `<h1>There is no pokemon like "${searchTerm}"!</h1>`;
+        }
     } else if (searchTerm === "") {
         POKE_CONT.innerHTML = "";
         pokemons.forEach((pokemon) => {
@@ -196,5 +207,8 @@ form.addEventListener("submit", event => {
             POKE_CONT.appendChild(pokemonEl);
             createPokemonCart(pokemon);
         });
-    }
+    } 
+    buttons.forEach((button) => {
+        button.classList.remove("selected-type");
+    });
 });
