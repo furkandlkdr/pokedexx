@@ -1,8 +1,8 @@
-# Simple Pokedex Learning Project
+# Simple Pokedex (First Season) Learning Project
 
 ![status](https://github.com/furkandlkdr/pokedexx/actions/workflows/pages/pages-build-deployment/badge.svg)
 
-I tried to make a pokedex website for learning js, css and html. 
+I tried to make a pokedex website for learning JS, CSS and HTML. It's one of the first project that I made for learning Web Dev..
 
 I maded this project based on [this video](https://www.youtube.com/watch?v=QVBl7qVgxH8&t=928s)
 
